@@ -10,7 +10,7 @@
 <script>
 import { useRouter } from "vue-router";
 
-import FormUserComponent from '../Form/FormUserComponent.vue'
+import FormUserComponent from "../Form/FormUserComponent.vue";
 
 export default {
   name: "RegisterComponent",
@@ -18,9 +18,10 @@ export default {
     const router = useRouter();
     router.push("/register");
   },
-    components: {
-      FormUserComponent,
-    },
+  components: {
+    FormUserComponent,
+  },
+  
   props: {},
 };
 </script>

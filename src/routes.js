@@ -8,11 +8,11 @@ import IndivualComponent from './components/Crypto/IndividualComponent.vue';
 //definimos las rutas
 export default {
   routes: [
-    { path: '/', name: 'crypto', component: CryptoComponent },
-    { path: '/user', name: 'user', component: UserComponent },
-    { path: '/login', name: 'login', component: LoginComponent },
-    { path: '/register', name: 'register', component: RegisterComponent },
-    { path: '/edit-user', name: 'edit-user', component: EditUserComponent },
-    { path: '/currency', name: 'ind-cur', component: IndivualComponent }
+    { path: '/', name: 'Crypto', component: CryptoComponent, meta: { requiresAuth: true } },
+    { path: '/user', name: 'User', component: UserComponent, meta: { requiresAuth: true }  },
+    { path: '/login', name: 'Login', component: LoginComponent },
+    { path: '/register', name: 'Register', component: RegisterComponent },
+    { path: '/edit-user', name: 'Edit-user', component: EditUserComponent, meta: { requiresAuth: true }  },
+    { path: '/currency', name: 'Ind-cur', component: IndivualComponent, meta: { requiresAuth: true } }
   ]
 } 
