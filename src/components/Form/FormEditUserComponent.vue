@@ -117,7 +117,7 @@
           type="submit"
           :disabled="isDisabled"
         >
-          Registrese
+          Actualizar
         </button>
       </div>
     </form>

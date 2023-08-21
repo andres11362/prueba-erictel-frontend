@@ -1,5 +1,6 @@
 <!-- Componente formulario que maneja el registro del usuario -->
 <template>
+  
   <form class="w-full rounded-2xl bg-gray-600 p-10" @submit.prevent="register">
     <DangerAlert
       :status="error_status"
