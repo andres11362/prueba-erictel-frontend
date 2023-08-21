@@ -22,7 +22,7 @@
           class="appearance-none block w-full bg-gray-200 text-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           :class="
             error_data.errors.name && error_data.errors.name.length > 0
-              ? 'border border-pink-500'
+              ? 'border border-pink-200'
               : ''
           "
           id="name"
@@ -32,7 +32,7 @@
         />
         <p
           v-if="error_data.errors.name && error_data.errors.name.length > 0"
-          class="text-pink-500 text-xs italic"
+          class="text-pink-200 text-xs italic"
         >
           {{ error_data.errors.name[0] }}
         </p>
@@ -48,7 +48,7 @@
           class="appearance-none block w-full bg-gray-200 text-gray-500 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           :class="
             error_data.errors.email && error_data.errors.email.length > 0
-              ? 'border border-pink-500'
+              ? 'border border-pink-200'
               : ''
           "
           id="email"
@@ -58,7 +58,7 @@
         />
         <p
           v-if="error_data.errors.email && error_data.errors.email.length > 0"
-          class="text-pink-500 text-xs italic"
+          class="text-pink-200 text-xs italic"
         >
           {{ error_data.errors.email[0] }}
         </p>
@@ -76,7 +76,7 @@
           class="appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           :class="
             error_data.errors.password && error_data.errors.password.length > 0
-              ? 'border border-pink-500'
+              ? 'border border-pink-200'
               : ''
           "
           id="password"
@@ -88,7 +88,7 @@
           v-if="
             error_data.errors.password && error_data.errors.password.length > 0
           "
-          class="text-pink-500 text-xs italic"
+          class="text-pink-200 text-xs italic"
         >
           {{ error_data.errors.password[0] }}
         </p>
@@ -124,7 +124,7 @@
           :class="
             error_data.errors.description &&
             error_data.errors.description.length > 0
-              ? 'border border-pink-500'
+              ? 'border border-pink-200'
               : ''
           "
           placeholder="Escribe tu descripción"
@@ -135,7 +135,7 @@
             error_data.errors.description &&
             error_data.errors.description.length > 0
           "
-          class="text-pink-500 text-xs italic"
+          class="text-pink-200 text-xs italic"
         >
           {{ error_data.errors.description[0] }}
         </p>
@@ -188,8 +188,8 @@ export default {
     error_status: 201,
   }),
   mounted() {
-    this.email = this.user ? this.user.email : "",
-    this.name = this.user ? this.user.name : ""
+    (this.email = this.user ? this.user.email : ""),
+      (this.name = this.user ? this.user.name : "");
   },
   methods: {
     async register() {
@@ -211,7 +211,9 @@ export default {
       } catch (error) {
         const { data, status } = error.response;
         this.error = true;
-        this.error_data = data;
+        if (status === 422) {
+          this.error_data = data;
+        }
         this.error_status = status;
       }
     },

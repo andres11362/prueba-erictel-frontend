@@ -20,7 +20,7 @@
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           :class="
             error_data.errors.email && error_data.errors.email.length > 0
-              ? 'border border-pink-500'
+              ? 'border border-pink-200'
               : ''
           "
           id="email"
@@ -30,7 +30,7 @@
         />
         <p
           v-if="error_data.errors.email && error_data.errors.email.length > 0"
-          class="text-pink-500 text-xs italic"
+          class="text-pink-200 text-xs italic"
         >
           {{ error_data.errors.email[0] }}
         </p>
@@ -46,7 +46,7 @@
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           :class="
             error_data.errors.password && error_data.errors.password.length > 0
-              ? 'border border-pink-500'
+              ? 'border border-pink-200'
               : ''
           "
           id="password"
@@ -58,7 +58,7 @@
           v-if="
             error_data.errors.password && error_data.errors.password.length > 0
           "
-          class="text-pink-500 text-xs italic"
+          class="text-pink-200 text-xs italic"
         >
           {{ error_data.errors.password[0] }}
         </p>
@@ -77,7 +77,7 @@
 
 <script>
 import auth from "@/logic/auth";
-import DangerAlert from "../../Alerts/DangerAlert.vue";
+import DangerAlert from "../Alerts/DangerAlert.vue";
 import { mapMutations } from "vuex";
 
 export default {
@@ -112,13 +112,17 @@ export default {
         this.$router.push("/");
         this.login(data);
       } catch (error) {
+        this.error = true;
         if (error.response) {
           const { data, status } = error.response;
-          this.error = true;
-          this.error_data = data;
+          if (status === 422) {
+            this.error_data = data;
+          }
           this.error_status = status;
-        } else {
+        } else if (error) {
           console.log(error);
+        } else {
+          console.log(error.message);
         }
       }
     },

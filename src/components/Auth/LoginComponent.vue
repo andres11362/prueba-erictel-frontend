@@ -9,7 +9,7 @@
 
 <script>
 import { useRouter } from "vue-router";
-import FormLogin from "./form/FormLogin.vue";
+import FormLogin from "../Form/FormLogin.vue";
 
 export default {
   name: "LoginComponent",

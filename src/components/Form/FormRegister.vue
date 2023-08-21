@@ -9,12 +9,12 @@
           Nombre
         </label>
         <input
-          class="appearance-none block w-full bg-gray-200 text-gray-300 border border-pink-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          class="appearance-none block w-full bg-gray-200 text-gray-300 border border-pink-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           id="grid-first-name"
           type="text"
           placeholder="Nombre"
         />
-        <p class="text-pink-500 text-xs italic">Please fill out this field.</p>
+        <p class="text-pink-200 text-xs italic">Please fill out this field.</p>
       </div>
       <div class="w-full md:w-1/2 px-3">
         <label

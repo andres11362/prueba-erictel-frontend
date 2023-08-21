@@ -33,7 +33,7 @@
             class="appearance-none block w-full bg-gray-200 text-gray-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
             :class="
               error_data.errors.name && error_data.errors.name.length > 0
-                ? 'border border-pink-500'
+                ? 'border border-pink-200'
                 : ''
             "
             id="name"
@@ -44,7 +44,7 @@
           />
           <p
             v-if="error_data.errors.name && error_data.errors.name.length > 0"
-            class="text-pink-500 text-xs italic"
+            class="text-pink-200 text-xs italic"
           >
             {{ error_data.errors.name[0] }}
           </p>
@@ -60,7 +60,7 @@
             class="appearance-none block w-full bg-gray-200 text-gray-500 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             :class="
               error_data.errors.email && error_data.errors.email.length > 0
-                ? 'border border-pink-500'
+                ? 'border border-pink-200'
                 : ''
             "
             id="email"
@@ -71,7 +71,7 @@
           />
           <p
             v-if="error_data.errors.email && error_data.errors.email.length > 0"
-            class="text-pink-500 text-xs italic"
+            class="text-pink-200 text-xs italic"
           >
             {{ error_data.errors.email[0] }}
           </p>
@@ -92,7 +92,7 @@
             :class="
               error_data.errors.description &&
               error_data.errors.description.length > 0
-                ? 'border border-pink-500'
+                ? 'border border-pink-200'
                 : ''
             "
             placeholder="Escribe tu descripción"
@@ -104,7 +104,7 @@
               error_data.errors.description &&
               error_data.errors.description.length > 0
             "
-            class="text-pink-500 text-xs italic"
+            class="text-pink-200 text-xs italic"
           >
             {{ error_data.errors.description[0] }}
           </p>
@@ -151,7 +151,7 @@ export default {
     },
     error_status: 201,
     loading: false,
-    isDisabled: false
+    isDisabled: false,
   }),
   async mounted() {
     try {
@@ -186,7 +186,9 @@ export default {
         if (error.response) {
           const { data, status } = error.response;
           this.error = true;
-          this.error_data = data;
+          if (status === 422) {
+            this.error_data = data;
+          }
           this.error_status = status;
         } else {
           console.log(error);
