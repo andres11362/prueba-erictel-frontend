@@ -7,22 +7,21 @@
       class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
       title="Woman holding a mug"
     >
-      <img class="object-cover" src="../../assets/img/image-user.jpg" />
+      <img v-if="imgTmp !== ''" class="object-contain" :src="imgTmp" />
+      <img v-else class="object-cover" src="../../assets/img/image-user.jpg" />
     </div>
     <div
       class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal"
     >
       <div class="mb-8">
-        <div class="text-gray-400 font-bold text-xl mb-2">Usuario Usuario</div>
+        <div class="text-gray-400 font-bold text-xl mb-2">{{ user.name }}</div>
         <p class="text-gray-300 text-base">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus
-          quia, nulla! Maiores et perferendis eaque, exercitationem praesentium
-          nihil.
+          {{ user.description }}
         </p>
       </div>
       <div class="flex items-center">
         <div class="text-sm">
-          <p class="text-gray-100 leading-none">correo@correo.com</p>
+          <p class="text-gray-100 leading-none">{{ user.email }}</p>
         </div>
       </div>
     </div>
@@ -32,19 +31,30 @@
       <button
         type="button"
         class="text-gray-300 hover:text-white border border-gray-600 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+        @click="handleShowForm"
       >
-        Subir Imagen
+        {{ !showForm ? "Subir Imagen" : "Ocultar Formulario" }}
       </button>
-      <a
+
+      <router-link
+        to="/edit-user"
         class="text-red-300 hover:text-white border border-red-600 hover:bg-red-900 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-red-400 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
-        >Editar perfil</a
+        >Editar perfil</router-link
       >
     </div>
   </div>
-  <form>
+  <form v-if="showForm" @submit.prevent="upload">
+    <DangerAlert
+      :status="error_status"
+      @cleanErrors="cleanErrors"
+      message="Ha ocurrido un error vuelva a intentarlo"
+    />
+    <SuccessAlert
+      :status="error_status"
+      @cleanErrors="cleanErrors"
+      message="Imagen subida, correctamente"
+    />
     <div>
-    <form>
-    </form>
       <label
         class="block mb-2 text-sm font-medium text-gray-200 dark:text-gray-300"
         for="file_input"
@@ -54,7 +64,108 @@
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
         id="file_input"
         type="file"
+        @change="getFile"
       />
+      <br />
+      <button
+        type="submit"
+        class="text-green-300 hover:text-white border border-green-600 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+      >
+        Subir Imagen
+      </button>
     </div>
   </form>
 </template>
+
+<script>
+import user from "@/logic/user";
+import DangerAlert from "../Alerts/DangerAlert.vue";
+import SuccessAlert from "../Alerts/SuccessAlert.vue";
+
+export default {
+  name: "UserComponent",
+  components: {
+    DangerAlert,
+    SuccessAlert,
+  },
+  data: () => ({
+    user: {},
+    image: "",
+    imgTmp: "",
+    error: false,
+    showForm: false,
+    error_data: {
+      message: "",
+      errors: {
+        image: [],
+      },
+    },
+    error_status: 201,
+  }),
+  async mounted() {
+    try {
+      const res = await user.getUser();
+      const { user: userData } = res.data;
+      this.user = userData;
+      this.image = userData.image
+        ? `${process.env.VUE_APP_TEST_ERICTE_STG}/${userData.image}`
+        : "";
+      this.imgTmp = userData.image
+        ? `${process.env.VUE_APP_TEST_ERICTE_STG}/${userData.image}`
+        : "";
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  methods: {
+    async getFile(event) {
+      const file = event.target.files[0];
+      this.imgTmp = URL.createObjectURL(file);
+      this.image = file;
+    },
+    async upload() {
+      try {
+        const res = await user.uploadImageUser(this.image);
+        this.error_status = 200;
+        this.image = `${process.env.VUE_APP_TEST_ERICTE_STG}/${res.data.route}`;
+        setTimeout(() => {
+          this.showForm = false;
+          this.error_status = 201
+        }, 2000);
+      } catch (error) {
+        if (error.response) {
+          const { data, status } = error.response;
+          this.error = true;
+          this.error_data = data;
+          this.error_status = status;
+        } else {
+          console.log(error);
+        }
+      }
+    },
+    handleShowForm() {
+      this.showForm = !this.showForm;
+      this.imgTmp = "";
+    },
+    cleanData() {
+      this.email = "";
+      this.name = "";
+      this.description = "";
+    },
+    cleanErrors() {
+      this.error = false;
+      this.error_data = {
+        message: "",
+        errors: {
+          email: [],
+          name: [],
+          description: [],
+          password: [],
+          password_confirmation: [],
+        },
+      };
+      this.error_status = 201;
+    },
+  },
+};
+</script>

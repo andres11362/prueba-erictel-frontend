@@ -1,5 +1,5 @@
 <template>
-  <form class="w-full rounded-2xl bg-gray-600 p-10" @submit.prevent="register">
+  <form class="w-full rounded-2xl bg-gray-600 p-10" @submit.prevent="update">
     <DangerAlert
       :status="error_status"
       @cleanErrors="cleanErrors"
@@ -8,7 +8,7 @@
     <SuccessAlert
       :status="error_status"
       @cleanErrors="cleanErrors"
-      message="Registro exitoso, se redirigira al login"
+      message="Actualización exitosa, se redirigira al perfil"
     />
     <div class="flex flex-wrap -mx-3 mb-6">
       <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -39,7 +39,7 @@
       </div>
       <div class="w-full md:w-1/2 px-3">
         <label
-          class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
+          class="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
           for="email"
         >
           Correo electronico
@@ -62,51 +62,6 @@
         >
           {{ error_data.errors.email[0] }}
         </p>
-      </div>
-    </div>
-    <div class="flex flex-wrap -mx-3 mb-6">
-      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-        <label
-          class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
-          for="password"
-        >
-          Contraseña
-        </label>
-        <input
-          class="appearance-none block w-full bg-gray-200 text-gray-500 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          :class="
-            error_data.errors.password && error_data.errors.password.length > 0
-              ? 'border border-pink-500'
-              : ''
-          "
-          id="password"
-          type="password"
-          placeholder="*************"
-          v-model="password"
-        />
-        <p
-          v-if="
-            error_data.errors.password && error_data.errors.password.length > 0
-          "
-          class="text-pink-500 text-xs italic"
-        >
-          {{ error_data.errors.password[0] }}
-        </p>
-      </div>
-      <div class="w-full md:w-1/2 px-3">
-        <label
-          class="block uppercase tracking-wide text-gray-500 text-xs font-bold mb-2"
-          for="password_confirmation"
-        >
-          Confirmar contraseña
-        </label>
-        <input
-          class="appearance-none block w-full bg-gray-200 text-gray-500 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-          id="password_confirmation"
-          type="password"
-          placeholder="*************"
-          v-model="password_confirmation"
-        />
       </div>
     </div>
     <div class="flex flex-wrap -mx-3 mb-6">
@@ -153,17 +108,12 @@
 </template>
 
 <script>
-import auth from "@/logic/auth";
+import user from "@/logic/user";
 import DangerAlert from "../Alerts/DangerAlert.vue";
 import SuccessAlert from "../Alerts/SuccessAlert.vue";
 
 export default {
-  name: "FormRegister",
-  props: {
-    user: {
-      type: Object,
-    },
-  },
+  name: "FormEditUser",
   components: {
     DangerAlert,
     SuccessAlert,
@@ -172,8 +122,6 @@ export default {
     email: "",
     name: "",
     description: "",
-    password: "",
-    password_confirmation: "",
     error: false,
     error_data: {
       message: "",
@@ -181,46 +129,50 @@ export default {
         email: [],
         name: [],
         description: [],
-        password: [],
-        password_confirmation: [],
       },
     },
     error_status: 201,
   }),
-  mounted() {
-    this.email = this.user ? this.user.email : "",
-    this.name = this.user ? this.user.name : ""
+  async mounted() {
+    try {
+      const res = await user.getUser();
+      const userData = res.data.user;
+      this.email = userData.email;
+      this.name = userData.name;
+      this.description = userData.description;
+    } catch (error) {
+      console.log(error);
+    }
   },
   methods: {
-    async register() {
+    async update() {
       try {
         const data = {
           email: this.email,
           name: this.name,
           description: this.description,
-          password: this.password,
-          password_confirmation: this.password_confirmation,
         };
-        await auth.register(data);
-        this.cleanData();
+        await user.updateUser(data);
         this.error_status = 200;
         setTimeout(() => {
           this.cleanErrors();
-          this.$router.push("/login");
+          this.$router.push("/user");
         }, 5000);
       } catch (error) {
-        const { data, status } = error.response;
-        this.error = true;
-        this.error_data = data;
-        this.error_status = status;
+        if (error.response) {
+          const { data, status } = error.response;
+          this.error = true;
+          this.error_data = data;
+          this.error_status = status;
+        } else {
+            console.log(error);
+        }
       }
     },
     cleanData() {
       this.email = "";
       this.name = "";
       this.description = "";
-      this.password = "";
-      this.password_confirmation = "";
     },
     cleanErrors() {
       this.error = false;

@@ -78,6 +78,7 @@
 <script>
 import auth from "@/logic/auth";
 import DangerAlert from "../../Alerts/DangerAlert.vue";
+// import { mapMutations } from "vuex";
 
 export default {
   name: "FormLogin",
@@ -98,6 +99,7 @@ export default {
     error_status: 201,
   }),
   methods: {
+    // ...mapMutations(["login"]),
     async login() {
       try {
         const user = {
@@ -106,6 +108,7 @@ export default {
         };
         const res = await auth.login(user);
         const { data } = res;
+        // this.login(data);
         auth.setUserToken(data.token);
         this.$router.push("/");
       } catch (error) {

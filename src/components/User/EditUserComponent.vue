@@ -3,24 +3,18 @@
     <h1 class="text-3xl text-gray-200 font-bold">Editar usuario</h1>
   </div>
   <div class="grid m-10 justify-center">
-    <FormUserComponent />
+    <FormEditUserComponent />
   </div>
 </template>
 
 <script>
-import { useRouter } from "vue-router";
-
-import FormUserComponent from '../Form/FormUserComponent.vue'
+import FormEditUserComponent from "../Form/FormEditUserComponent.vue";
 
 export default {
   name: "EditUserComponent",
-  setup() {
-    const router = useRouter();
-    router.push("/edit-user");
+  components: {
+    FormEditUserComponent,
   },
-    components: {
-      FormUserComponent,
-    },
   props: {},
 };
 </script>

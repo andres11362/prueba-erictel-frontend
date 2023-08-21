@@ -4,13 +4,18 @@ import App from './App.vue'
 // añadimos tailwind css
 import "@/assets/css/tailwind.css";
 
+import 'es6-promise/auto'
+
 //Importacion del vue-router
 import * as VueRouter from "vue-router";
 
 //importacion de rutas;
 import routes from './routes';
+
+//importacion del metodos del logout
 import auth from './logic/auth';
 
+import store from './store';
 
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),
@@ -32,4 +37,4 @@ router.beforeEach(async (to, from, next) => {
     }
 });
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(router).use(store).mount('#app')
