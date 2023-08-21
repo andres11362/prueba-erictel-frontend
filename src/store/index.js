@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
     state: {
@@ -15,4 +16,7 @@ export default createStore({
             state.user = null;
         },
     },
+    plugins: [createPersistedState({
+        paths: ['isLoggedIn', 'user']
+    })],
 });

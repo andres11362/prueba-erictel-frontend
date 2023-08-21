@@ -9,10 +9,10 @@
         class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
         title="Woman holding a mug"
       >
-        <img v-if="imgTmp !== ''" class="object-contain" :src="imgTmp" />
+        <img v-if="imgTmp !== ''" class="object-cover w-full h-full" :src="imgTmp" />
         <img
           v-else
-          class="object-cover"
+          class="object-cover w-full h-full"
           src="../../assets/img/image-user.jpg"
         />
       </div>

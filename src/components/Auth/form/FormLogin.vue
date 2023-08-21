@@ -7,7 +7,7 @@
     />
     <form
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      @submit.prevent="login"
+      @submit.prevent="loginUser"
     >
       <div class="mb-4">
         <label
@@ -78,7 +78,7 @@
 <script>
 import auth from "@/logic/auth";
 import DangerAlert from "../../Alerts/DangerAlert.vue";
-// import { mapMutations } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
   name: "FormLogin",
@@ -99,8 +99,8 @@ export default {
     error_status: 201,
   }),
   methods: {
-    // ...mapMutations(["login"]),
-    async login() {
+    ...mapMutations(["login"]),
+    async loginUser() {
       try {
         const user = {
           email: this.email,
@@ -108,9 +108,9 @@ export default {
         };
         const res = await auth.login(user);
         const { data } = res;
-        // this.login(data);
         auth.setUserToken(data.token);
         this.$router.push("/");
+        this.login(data);
       } catch (error) {
         if (error.response) {
           const { data, status } = error.response;

@@ -30,6 +30,7 @@
         <ul
           :class="showMenu ? 'flex' : 'hidden'"
           class="flex-col mt-8 space-y-4 md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0"
+          v-if="isLoggedIn"
         >
           <router-link
             to="/"
@@ -44,13 +45,13 @@
             Perfil
           </router-link>
           <button
-            @click="logout"
+            @click="logoutUser"
             class="text-sm font-bold text-gray-200 hover:text-blue-400"
           >
             Cerrar sesión
           </button>
         </ul>
-        <!-- <ul
+        <ul
           :class="showMenu ? 'flex' : 'hidden'"
           class="flex-col mt-8 space-y-4 md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0"
           v-else
@@ -61,30 +62,30 @@
           >
             Registrarse
           </router-link>
-        </ul> -->
+        </ul>
       </nav>
     </div>
   </div>
 </template>
 <script>
 import auth from "@/logic/auth";
-// import { onMounted, onUpdated } from 'vue';
-// import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   data: () => ({
     showMenu: false,
   }),
-  // computed: {
-  //   ...mapState(["isLoggedIn"]),
-  // },
+  computed: {
+    ...mapState(["isLoggedIn"]),
+  },
   methods: {
-    // ...mapMutations(["login"]),
-    async logout() {
+    ...mapMutations(["logout"]),
+    async logoutUser() {
       try {
         await auth.logout();
         auth.deleteUserToken();
         this.$router.push("/login");
+        this.logout();
       } catch (error) {
         // console.log(error);
       }
