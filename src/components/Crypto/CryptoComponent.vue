@@ -1,24 +1,48 @@
 <template>
-  <div class="my-10 mx-5">
-    <h1 class="text-3xl text-gray-200 font-bold">Home</h1>
-  </div>
-  <div class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-    <Card />
+  <LoaderComponent v-if="loading" />
+  <div v-else>
+    <div class="my-10 mx-5">
+      <h1 class="text-3xl text-gray-200 font-bold">Home</h1>
+    </div>
+    <div
+      class="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1"
+    >
+      <div class="relative" v-for="item in data" :key="item.id">
+        <div class="absolute w-9 left-8 z-10">
+          <img class="object-contain" src="../../assets/img/Bitcoin.svg" />
+        </div>
+        <Card :item="item" />
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { useRouter } from 'vue-router';
 import Card from "./components/Card.vue";
+import LoaderComponent from '../Loader/LoaderComponent.vue';
+import crypto from "@/logic/crypto";
 
 export default {
   name: "CryptoComponent",
-  setup () {
-    const router = useRouter();
-    router.push('/');
-  },
   components: {
     Card,
+    LoaderComponent
   },
-  props: {},
+  data: () => ({
+    data: {},
+    loading: true,
+    error: false,
+    error_status: 201,
+  }),
+  async mounted() {
+    try {
+      this.loading = true;
+      const res = await crypto.getAll();
+      const { data } = res.data;
+      this.data = data;
+      this.loading = false;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 </script>

@@ -12,7 +12,7 @@ export default {
     { path: '/user', name: 'User', component: UserComponent, meta: { requiresAuth: true }  },
     { path: '/login', name: 'Login', component: LoginComponent },
     { path: '/register', name: 'Register', component: RegisterComponent },
-    { path: '/edit-user', name: 'Edit-user', component: EditUserComponent, meta: { requiresAuth: true }  },
-    { path: '/currency', name: 'Ind-cur', component: IndivualComponent, meta: { requiresAuth: true } }
+    { path: '/edit-user', name: 'EditUser', component: EditUserComponent, meta: { requiresAuth: true }  },
+    { path: '/currency/:id', name: 'IndCur', component: IndivualComponent, meta: { requiresAuth: true } }
   ]
 } 

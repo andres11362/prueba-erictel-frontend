@@ -112,10 +112,14 @@ export default {
         auth.setUserToken(data.token);
         this.$router.push("/");
       } catch (error) {
-        const { data, status } = error.response;
-        this.error = true;
-        this.error_data = data;
-        this.error_status = status;
+        if (error.response) {
+          const { data, status } = error.response;
+          this.error = true;
+          this.error_data = data;
+          this.error_status = status;
+        } else {
+          console.log(error);
+        }
       }
     },
     cleanData() {
