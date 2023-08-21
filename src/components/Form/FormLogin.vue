@@ -1,3 +1,4 @@
+<!-- Componente formulario que maneja el inicio de sesión del usuario -->
 <template>
   <div class="rounded-2xl w-full max-w-md bg-gray-600">
     <DangerAlert
@@ -82,9 +83,11 @@ import { mapMutations } from "vuex";
 
 export default {
   name: "FormLogin",
+  // Llamados de componente de alertas
   components: {
     DangerAlert,
   },
+  // Manejo de información (models) para el formulario.
   data: () => ({
     email: "",
     password: "",
@@ -99,7 +102,16 @@ export default {
     error_status: 201,
   }),
   methods: {
+    // se accede al mutador del store de vuex para modificarlo en caso de un acceso correcto
     ...mapMutations(["login"]),
+    /**
+     *  Metodo para iniciar sesión con datos del usuario.
+     *  Se envia la información al endpoint de login
+     *  en caso de ser correcto redirige al inicio de la 
+     *  aplicación y setea las variables con vuex.
+     * 
+     *  En caso contrario alertara al usuario.
+     **/
     async loginUser() {
       try {
         const user = {

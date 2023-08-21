@@ -1,3 +1,4 @@
+<!-- Componente formulario que maneja las actualizaciones de un usuario -->
 <template>
   <LoaderComponent v-if="loading" />
   <div v-else>
@@ -131,11 +132,13 @@ import LoaderComponent from "../Loader/LoaderComponent.vue";
 
 export default {
   name: "FormEditUser",
+  // Llamados de componente de alertas y loader
   components: {
     DangerAlert,
     SuccessAlert,
     LoaderComponent,
   },
+  // Manejo de información (models) para el formulario.
   data: () => ({
     email: "",
     name: "",
@@ -153,6 +156,10 @@ export default {
     loading: false,
     isDisabled: false,
   }),
+  /**
+   *  Cuando se monta el componente se traen los datos
+   *  del usuario por medio del API
+   **/
   async mounted() {
     try {
       this.loading = true;
@@ -167,6 +174,13 @@ export default {
     }
   },
   methods: {
+    /**
+     *  Metodo para actualizar los datos del usuario.
+     *  Se envia la información al endpoint de actualización
+     *  en caso de ser correcto limpia el formulario y retorna
+     *  a la pagina de perfil del usuario, en caso contrario
+     *  alertara al usuario.
+     **/
     async update() {
       try {
         this.isDisabled = true;

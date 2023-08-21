@@ -1,3 +1,5 @@
+<!-- Componente de alert en caso de una accion correcta -->
+<!-- En caso de mostrar que llege un status igual a 200 se mostrara-->
 <template>
   <div
     class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-3"
@@ -23,6 +25,10 @@
 </template>
 
 <script>
+/**
+ * El componente recibe parametros del estatus HTTP de una respuesta
+ * Y el mensaje a mostrar.
+ **/
 export default {
   name: "SuccessAlert",
   props: {

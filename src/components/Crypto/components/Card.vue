@@ -1,3 +1,4 @@
+<!-- Componente Card que muestra datos basicos de una criptomoneda -->
 <template>
   <div class="relative">
     <router-link
@@ -27,6 +28,10 @@
 </template>
 
 <script>
+/**
+ * Se traen como parametros los datos de la moneda como un objeto
+ * Y su posicion dentro del arreglo de monedas
+ **/
 export default {
   name: "CardCrypto",
   props: {

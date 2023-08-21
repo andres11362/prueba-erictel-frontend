@@ -1,3 +1,5 @@
+<!-- Componente principal de criptomonedas que muestra una moneda en especifico -->
+<!-- en el API -->
 <template>
   <LoaderComponent v-if="loading" />
   <div v-else class="m-10 grid grid-cols-1 content-center">
@@ -100,22 +102,28 @@
 <script>
 import crypto from "@/logic/crypto";
 import { useRoute } from "vue-router";
-import LoaderComponent from '../Loader/LoaderComponent.vue';
+import LoaderComponent from "../Loader/LoaderComponent.vue";
 
 export default {
   name: "IndivualComponent",
   components: {
-    LoaderComponent
+    LoaderComponent,
   },
+  // Datos a cargar data, si es necesario mostrar los datos, y manejo de errores
   data: () => ({
     data: {},
     loading: false,
     error: false,
     error_status: 201,
   }),
+  /**
+   * Se hace el llamado al endpoint de una moneda
+   * por medio del parametro del id de la ruta
+   * En caso de ser correcto el llamado se devuelve la data
+   **/
   async mounted() {
     try {
-      this.loading= true;
+      this.loading = true;
       const route = useRoute();
       const id = route.params.id;
       const res = await crypto.getOne(id);

@@ -1,3 +1,4 @@
+<!-- Componente navbar para navegación del usuario -->
 <template>
   <div>
     <div class="bg-gray-900">
@@ -75,11 +76,23 @@ export default {
   data: () => ({
     showMenu: false,
   }),
+  /**
+   * Se trae el atributo de verificación de
+   * autenticación del usuario desde vuex
+   **/
   computed: {
     ...mapState(["isLoggedIn"]),
   },
   methods: {
+    // Llamamos el mutador del store que permite el cierre de sesión
     ...mapMutations(["logout"]),
+    /**
+     * Metodo de cierre de sesion
+     * Se invoca el API y si todo es correcto
+     * cerrara la sesión y enviara al usuario
+     * al login ademas de borrar los valores
+     * existentes en vuex
+    **/
     async logoutUser() {
       try {
         await auth.logout();

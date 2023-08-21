@@ -1,3 +1,5 @@
+<!-- Componente de alert en caso de un error -->
+<!-- En caso de mostrar que llege un status mayor a 400 se mostrara-->
 <template>
   <div
     class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-3"
@@ -25,6 +27,13 @@
 </template>
 
 <script>
+/**
+ * El componente recibe parametros del estatus HTTP de una respuesta
+ * Y el mensaje a mostrar.
+ * 
+ * En caso de cerrarlo se ejecuta una accion del padre para limpiar el formulario 
+ * donde este si es el caso
+ **/
 export default {
   name: "DangerAlert",
   props: {

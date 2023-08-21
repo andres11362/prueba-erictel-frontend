@@ -1,3 +1,4 @@
+<!-- Componente para visualización de datos del usuario -->
 <template>
   <LoaderComponent v-if="loading" />
   <div v-else>
@@ -9,7 +10,11 @@
         class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
         title="Woman holding a mug"
       >
-        <img v-if="imgTmp !== ''" class="object-cover w-full h-full" :src="imgTmp" />
+        <img
+          v-if="imgTmp !== ''"
+          class="object-cover w-full h-full"
+          :src="imgTmp"
+        />
         <img
           v-else
           class="object-cover w-full h-full"
@@ -73,13 +78,13 @@
           id="file_input"
           type="file"
           @change="getFile"
-          :disabled="isDisabled" 
+          :disabled="isDisabled"
         />
         <br />
         <button
           type="submit"
           class="text-green-300 hover:text-white border border-green-600 hover:bg-green-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-          :disabled="isDisabled" 
+          :disabled="isDisabled"
         >
           Subir Imagen
         </button>
@@ -96,11 +101,13 @@ import LoaderComponent from "../Loader/LoaderComponent.vue";
 
 export default {
   name: "UserComponent",
+  // Llamados de componente de alertas y loader
   components: {
     DangerAlert,
     SuccessAlert,
-    LoaderComponent
+    LoaderComponent,
   },
+  // Manejo de información (models) para el formulario de subida de imagenes.
   data: () => ({
     user: {},
     image: "",
@@ -116,8 +123,12 @@ export default {
     },
     error_status: 201,
     loading: false,
-    isDisabled: false
+    isDisabled: false,
   }),
+  /**
+   * Cuando el componente se monta se carga la información del mismo
+   * Ademas si trae una imagen se carga desde el servidor.
+   **/
   async mounted() {
     try {
       this.loading = true;
@@ -139,24 +150,29 @@ export default {
     }
   },
   methods: {
+    // Metodo optener la imagen temporal del usuario.
     async getFile(event) {
       const file = event.target.files[0];
       this.imgTmp = URL.createObjectURL(file);
       this.image = file;
     },
+    /**
+     * Metodo para cargar la imagen al servidor, por medio del api
+     * ademas retornamos la ruta para que haga la carga final de imagen.
+     **/
     async upload() {
       try {
-        this.isDisabled= true;
+        this.isDisabled = true;
         const res = await user.uploadImageUser(this.image);
         this.error_status = 200;
         this.image = `${process.env.VUE_APP_TEST_ERICTE_STG}/${res.data.route}`;
         setTimeout(() => {
           this.showForm = false;
           this.error_status = 201;
-          this.isDisabled= false;
+          this.isDisabled = false;
         }, 2000);
       } catch (error) {
-        this.isDisabled= false;
+        this.isDisabled = false;
         if (error.response) {
           const { data, status } = error.response;
           this.error = true;
@@ -170,7 +186,7 @@ export default {
     handleShowForm() {
       this.showForm = !this.showForm;
       this.imgTmp = this.imgTmp2;
-      this.isDisabled= false;
+      this.isDisabled = false;
     },
     cleanData() {
       this.email = "";

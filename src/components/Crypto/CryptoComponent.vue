@@ -1,3 +1,5 @@
+<!-- Componente principal de criptomonedas que muestra todas la monedas consultadas -->
+<!-- en el API -->
 <template>
   <LoaderComponent v-if="loading" />
   <div v-else>
@@ -27,12 +29,17 @@ export default {
     Card,
     LoaderComponent
   },
+  // Datos a cargar data, si es necesario mostrar los datos, y manejo de errores
   data: () => ({
     data: {},
     loading: true,
     error: false,
     error_status: 201,
   }),
+  /** 
+   * Se hace el llamado al endpoint de todas las monedas 
+   * En caso de ser correcto el llamado se devuelve la data
+   **/
   async mounted() {
     try {
       this.loading = true;

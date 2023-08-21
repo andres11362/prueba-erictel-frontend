@@ -1,3 +1,4 @@
+<!-- Componente loader que se muestra si un componente padre asi lo desea -->
 <template>
   <div
     class="w-full min-h-screen flex justify-center items-center"

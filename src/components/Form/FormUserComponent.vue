@@ -1,3 +1,4 @@
+<!-- Componente formulario que maneja el registro del usuario -->
 <template>
   <form class="w-full rounded-2xl bg-gray-600 p-10" @submit.prevent="register">
     <DangerAlert
@@ -159,15 +160,19 @@ import SuccessAlert from "../Alerts/SuccessAlert.vue";
 
 export default {
   name: "FormRegister",
-  props: {
-    user: {
-      type: Object,
-    },
-  },
+  // Llamados de componente de alertas
   components: {
     DangerAlert,
     SuccessAlert,
   },
+  /**
+   *  Metodo para iniciar sesión con datos del usuario.
+   *  Se envia la información al endpoint de login
+   *  en caso de ser correcto redirige al inicio de la
+   *  aplicación y setea las variables con vuex.
+   *
+   *  En caso contrario alertara al usuario.
+   **/
   data: () => ({
     email: "",
     name: "",
@@ -187,11 +192,14 @@ export default {
     },
     error_status: 201,
   }),
-  mounted() {
-    (this.email = this.user ? this.user.email : ""),
-      (this.name = this.user ? this.user.name : "");
-  },
   methods: {
+    /**
+     *  Metodo para registrase con datos del usuario.
+     *  Se envia la información al endpoint de registro
+     *  en caso de ser correcto redirige al login.
+     *
+     *  En caso contrario alertara al usuario.
+     **/
     async register() {
       try {
         const data = {

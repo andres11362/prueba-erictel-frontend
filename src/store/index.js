@@ -1,6 +1,11 @@
 import { createStore } from 'vuex';
 import createPersistedState from "vuex-persistedstate";
 
+/**
+ * Store para el manejo de datos de vuex
+ * Se usa la libreria vuex-persistedstate
+ * para mantener persistencia.
+ */
 export default createStore({
     state: {
         isLoggedIn: false, // Inicialmente no autenticado
